@@ -33,7 +33,19 @@ On Debian-based Linux distributions:
 sudo apt-get install sox xclip alsa-utils
 ```
 
-### Installing the Script
+### Installing the CLI Tool
+
+You can install the CLI tool globally using npm:
+
+```bash
+npm install -g whisper-stream
+```
+
+This will make the `whisper-stream` command available globally on your system.
+
+### Manual Installation
+
+If you prefer to install from source:
 
 1. Clone the repository or download the script files
 2. Navigate to the script directory
@@ -43,7 +55,13 @@ sudo apt-get install sox xclip alsa-utils
 npm install
 ```
 
-This will install the following dependencies:
+4. Optionally, link the package globally:
+
+```bash
+npm link
+```
+
+The CLI tool depends on the following packages:
 - axios - For making HTTP requests to the OpenAI API
 - clipboardy - For clipboard operations
 - commander - For command-line argument parsing
@@ -51,7 +69,13 @@ This will install the following dependencies:
 
 ## Usage
 
-You can start the script with the following command:
+If you installed the package globally, you can use the CLI command:
+
+```bash
+whisper-stream [options]
+```
+
+If you installed from source, you can start the script with:
 
 ```bash
 node whisper-stream.js [options]
@@ -83,33 +107,33 @@ The available options are:
 
 ## Examples
 
-Here are some usage examples with a brief comment on each of them:
+Here are some usage examples with a brief comment on each of them. If you installed the package globally, replace `node whisper-stream.js` with `whisper-stream` in these examples.
 
-`> node whisper-stream.js`
+`> whisper-stream`
 
-This will start the script with the default settings, recording audio continuously and transcribing it into text using the default volume threshold and silence length. If the OpenAI API token is not provided as an argument, the script will automatically use the value of the `OPENAI_API_KEY` environment variable if it is set.
+This will start the tool with the default settings, recording audio continuously and transcribing it into text using the default volume threshold and silence length. If the OpenAI API token is not provided as an argument, it will automatically use the value of the `OPENAI_API_KEY` environment variable if it is set.
 
-`> node whisper-stream.js -l ja`
+`> whisper-stream -l ja`
 
-This will start the script with the input language specified as Japanese; see the [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) page for ISO-639-1 language codes.
+This will start the tool with the input language specified as Japanese; see the [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) page for ISO-639-1 language codes.
 
-`> node whisper-stream.js -tr`
+`> whisper-stream -tr`
 
 It transcribes the spoken audio in whatever language and presents the text translated into English. Currently, the target language for translation is limited to English.
 
-`> node whisper-stream.js -v 2% -s 2 -o -d 60 -t your_openai_api_token`
+`> whisper-stream -v 2% -s 2 -o -d 60 -t your_openai_api_token`
 
 This example sets the minimum volume threshold to 2%, the minimum silence length to 2 seconds, enables one-shot mode, sets the recording duration to 60 seconds, and specifies the OpenAI API token.
 
-`> node whisper-stream.js -f ~/Desktop/interview.mp3 -p ~/Desktop/transcripts -l en`
+`> whisper-stream -f ~/Desktop/interview.mp3 -p ~/Desktop/transcripts -l en`
 
 This will transcribe the audio file located at `~/Desktop/interview.mp3`. The input language is specified as English. The output directory is set to `~Desktop/transcripts` to create a transcription text file.
 
-`> node whisper-stream.js -p2 'wc -w'`
+`> whisper-stream -p2 'wc -w'`
 
-This will start the script with the default settings for recording audio and transcribing it. After transcription, the transcribed text will be piped to the `wc -w` command, which counts the number of words in the text. The result, indicating the total word count, will be printed below the original transcribed output.
+This will start the tool with the default settings for recording audio and transcribing it. After transcription, the transcribed text will be piped to the `wc -w` command, which counts the number of words in the text. The result, indicating the total word count, will be printed below the original transcribed output.
 
-`> node whisper-stream.js -g segment -p ~/Desktop`
+`> whisper-stream -g segment -p ~/Desktop`
 
 The `-g` option allows you to specify the mode for timestamp granularities. The available modes are segment or word, and specifying either will display detailed transcript data in JSON format. When used in conjunction with the `-p` option to specify a directory, the results will be saved as a JSON file. For more information, see the [`timestamp_granularities[]`](https://platform.openai.com/docs/api-reference/audio/createTranscription#audio-createtranscription-timestamp_granularities) section in OpenAI Whisper API reference.
 
