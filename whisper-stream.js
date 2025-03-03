@@ -483,11 +483,16 @@ async function main() {
 
       // Check if the audio file is created successfully
       if (fs.existsSync(outputFile) && fs.statSync(outputFile).size > 0) {
+        // If oneshot mode is enabled, exit after one recording
+        const fileToConvert = outputFile; // get a copy of the outputFile variable before it is overwritten by the next recording
+        if (!oneshot) {
+          startRecording();
+        }
         // Start the spinner
         const spinnerInterval = spinner();
 
         // Convert the MP3 audio to text using the Whisper API
-        await convertAudioToText(outputFile);
+        await convertAudioToText(fileToConvert);
 
         // Stop the spinner
         clearInterval(spinnerInterval);
@@ -495,9 +500,6 @@ async function main() {
         // If oneshot mode is enabled, exit after one recording
         if (oneshot) {
           handleExit();
-        } else {
-          // Start the next recording
-          startRecording();
         }
       } else {
         console.log('No audio recorded.');
